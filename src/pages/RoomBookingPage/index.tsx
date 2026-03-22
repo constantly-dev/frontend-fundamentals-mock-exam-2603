@@ -1,17 +1,15 @@
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Top, Spacing, Border, Button } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import MessageBanner from 'components/MessageBanner';
 import AvailableRoomList from 'domain/reservation/components/AvailableRoomList';
 import BookingFilters from 'domain/reservation/components/BookingFilters';
-import { reservationKeys } from 'domain/reservation/constants/queryKeys';
 import { useAvailableRooms } from 'domain/reservation/hooks/useAvailableRooms';
+import { useCreateReservationMutation } from 'domain/reservation/hooks/useCreateReservationMutation';
 import { useReservationFilters } from 'domain/reservation/hooks/useReservationFilters';
 import { useFloorOptions } from 'domain/reservation/hooks/useFloorOptions';
-import { createReservation } from 'pages/remotes';
 import axios from 'axios';
 
 function formatDate(date: Date): string {
@@ -23,7 +21,6 @@ function formatDate(date: Date): string {
 
 export function RoomBookingPage() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const {
@@ -38,17 +35,7 @@ export function RoomBookingPage() {
     toggleEquipment,
   } = useReservationFilters();
   const { floors } = useFloorOptions();
-
-  const createMutation = useMutation(
-    (data: { roomId: string; date: string; start: string; end: string; attendees: number; equipment: string[] }) =>
-      createReservation(data),
-    {
-      onSuccess: (_data, variables) => {
-        queryClient.invalidateQueries(reservationKeys.list(variables.date));
-        queryClient.invalidateQueries(reservationKeys.myReservations);
-      },
-    }
-  );
+  const createMutation = useCreateReservationMutation();
 
   useEffect(() => {
     setSelectedRoomId(null);

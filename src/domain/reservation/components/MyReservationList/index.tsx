@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import { useMutation, useQuery, useQueryClient, useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQueries } from '@tanstack/react-query';
 import { Button, ListRow, Spacing, Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import { EQUIPMENT_LABELS } from 'domain/reservation/constants';
 import { reservationKeys } from 'domain/reservation/constants/queryKeys';
-import { cancelReservation, getMyReservations, getRooms } from 'pages/remotes';
+import { useCancelReservationMutation } from 'domain/reservation/hooks/useCancelReservationMutation';
+import { getMyReservations, getRooms } from 'pages/remotes';
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
 interface Reservation {
   id: string;
@@ -19,8 +19,6 @@ interface Reservation {
 }
 
 const MyReservationList = () => {
-  const queryClient = useQueryClient();
-
   const [{ data: myReservationList }, { data: rooms }] = useSuspenseQueries({
     queries: [
       { queryKey: reservationKeys.myReservations, queryFn: getMyReservations },
@@ -29,13 +27,7 @@ const MyReservationList = () => {
   });
 
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-
-  const cancelMutation = useMutation((id: string) => cancelReservation(id), {
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: reservationKeys.all });
-      queryClient.invalidateQueries({ queryKey: reservationKeys.myReservations });
-    },
-  });
+  const cancelMutation = useCancelReservationMutation();
 
   const handleCancel = async (id: string) => {
     try {
