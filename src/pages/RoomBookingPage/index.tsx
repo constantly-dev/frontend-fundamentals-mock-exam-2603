@@ -35,13 +35,7 @@ export function RoomBookingPage() {
     toggleEquipment,
   } = useReservationFilters();
   const { floors } = useFloorOptions();
-  const createMutation = useCreateReservationMutation();
-
-  useEffect(() => {
-    setSelectedRoomId(null);
-    setErrorMessage(null);
-  }, [filters]);
-
+  const { mutateAsync: createMutationAsync, isPending: isCreating } = useCreateReservationMutation();
   const { availableRooms } = useAvailableRooms(filters);
 
   const handleBook = async () => {
@@ -55,7 +49,7 @@ export function RoomBookingPage() {
     }
 
     try {
-      const result = await createMutation.mutateAsync({
+      const result = await createMutationAsync({
         roomId: selectedRoomId,
         date: filters.date,
         start: filters.startTime,
@@ -82,6 +76,11 @@ export function RoomBookingPage() {
       setSelectedRoomId(null);
     }
   };
+
+  useEffect(() => {
+    setSelectedRoomId(null);
+    setErrorMessage(null);
+  }, [filters]);
 
   return (
     <div
@@ -155,8 +154,8 @@ export function RoomBookingPage() {
             `}
           >
             <Spacing size={16} />
-            <Button display="full" onClick={handleBook} disabled={createMutation.isPending}>
-              {createMutation.isPending ? '예약 중...' : '확정'}
+            <Button display="full" onClick={handleBook} disabled={isCreating}>
+              {isCreating ? '예약 중...' : '확정'}
             </Button>
           </div>
         </>
