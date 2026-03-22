@@ -62,8 +62,14 @@ export function RoomBookingPage() {
     setSearchParams(params, { replace: true });
   }, [date, startTime, endTime, attendees, equipment, preferredFloor, setSearchParams]);
 
-  const { data: rooms = [] } = useQuery(['rooms'], getRooms);
-  const { data: reservations = [] } = useQuery(['reservations', date], () => getReservations(date), {
+  const { data: rooms = [] } = useQuery({
+    queryKey: ['rooms'],
+    queryFn: getRooms,
+  });
+
+  const { data: reservations = [] } = useQuery({
+    queryKey: ['reservations', date],
+    queryFn: () => getReservations(date),
     enabled: !!date,
   });
 

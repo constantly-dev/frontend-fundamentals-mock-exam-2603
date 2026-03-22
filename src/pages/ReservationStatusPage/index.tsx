@@ -56,11 +56,21 @@ export function ReservationStatusPage() {
     }
   }, [locationState]);
 
-  const { data: rooms = [] } = useQuery(['rooms'], getRooms);
-  const { data: reservations = [] } = useQuery(['reservations', date], () => getReservations(date), {
+  const { data: rooms = [] } = useQuery({
+    queryKey: ['rooms'],
+    queryFn: getRooms,
+  });
+
+  const { data: reservations = [] } = useQuery({
+    queryKey: ['reservations', date],
+    queryFn: () => getReservations(date),
     enabled: !!date,
   });
-  const { data: myReservationList = [] } = useQuery(['myReservations'], getMyReservations);
+
+  const { data: myReservationList = [] } = useQuery({
+    queryKey: ['myReservations'],
+    queryFn: getMyReservations,
+  });
 
   const cancelMutation = useMutation((id: string) => cancelReservation(id), {
     onSuccess: () => {
@@ -294,6 +304,8 @@ export function ReservationStatusPage() {
           })}
         </div>
       </div>
+
+      {/* 여기까지 타임라인 */}
 
       <Spacing size={24} />
       <Border size={8} />
