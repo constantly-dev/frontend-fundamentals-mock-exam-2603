@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import { Suspense, useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Top, Spacing, Border, Button, Text, Banner } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import DatePicker from 'components/DatePicker';
@@ -40,12 +39,6 @@ export function ReservationStatusPage() {
         padding-bottom: 40px;
       `}
     >
-      <Toaster
-        containerStyle={{
-          bottom: 32,
-        }}
-      />
-
       <Top.Top03
         css={css`
           padding-left: 24px;

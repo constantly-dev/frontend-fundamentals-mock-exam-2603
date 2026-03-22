@@ -7,6 +7,7 @@ import { GlobalPortal } from './GlobalPortal';
 import '_tosslib/sass/app.scss';
 import { PageLayout } from 'pages/PageLayout';
 import { Routes } from 'pages/Routes';
+import { Toaster } from 'react-hot-toast';
 
 export default function App() {
   const [queryClient] = useState(
@@ -34,6 +35,13 @@ export default function App() {
             }
           `}
         />
+
+        <Toaster
+          containerStyle={{
+            bottom: 32,
+          }}
+        />
+
         <PageLayout>
           <Routes />
         </PageLayout>
