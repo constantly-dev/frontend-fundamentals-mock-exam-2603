@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
 import { Button, ListRow, Spacing, Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import { EQUIPMENT_LABELS } from '../../../reservation/constants';
@@ -20,14 +20,11 @@ interface MyReservationListProps {
 }
 
 const MyReservationList = ({ handleCancel }: MyReservationListProps) => {
-  const { data: myReservationList = [] } = useSuspenseQuery({
-    queryKey: ['myReservations'],
-    queryFn: getMyReservations,
-  });
-
-  const { data: rooms } = useSuspenseQuery({
-    queryKey: ['rooms'],
-    queryFn: getRooms,
+  const [{ data: myReservationList }, { data: rooms }] = useSuspenseQueries({
+    queries: [
+      { queryKey: ['myReservations'], queryFn: getMyReservations },
+      { queryKey: ['rooms'], queryFn: getRooms },
+    ],
   });
 
   const getRoomName = (roomId: string) => rooms.find(r => r.id === roomId)?.name ?? roomId;
