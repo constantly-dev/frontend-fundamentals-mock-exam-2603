@@ -14,8 +14,17 @@ export function ReservationStatusPage() {
   const location = useLocation();
   const locationState = location.state as { message?: string } | null;
   const [successMessage, setSuccessMessage] = useState<string | null>(locationState?.message ?? null);
+  const initialDate = formatDateToYmd(new Date());
+  const [date, setDate] = useState(initialDate);
+  const [dateInputValue, setDateInputValue] = useState(initialDate);
 
-  const [date, setDate] = useState(formatDateToYmd(new Date()));
+  const handleDateChange = (value: string) => {
+    setDateInputValue(value);
+
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      setDate(value);
+    }
+  };
 
   useEffect(() => {
     if (locationState?.message) {
@@ -53,7 +62,7 @@ export function ReservationStatusPage() {
           날짜 선택
         </Text>
         <Spacing size={16} />
-        <DatePicker date={date} setDate={setDate} />
+        <DatePicker date={dateInputValue} setDate={handleDateChange} />
       </div>
 
       <Spacing size={24} />
