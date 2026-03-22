@@ -1,27 +1,25 @@
 import { css } from '@emotion/react';
 import { Suspense, useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Top, Spacing, Border, Button, Text, Banner } from '_tosslib/components';
+import { Top, Spacing, Border, Button, Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import DatePicker from 'components/DatePicker';
+import MessageBanner from 'components/MessageBanner';
 import MyReservationList from 'domain/reservation/components/MyReservationList';
 import ReservationTimeline from 'domain/reservation/components/ReservationTimeline';
-import { toast, Toaster } from 'react-hot-toast';
 import { formatDateToYmd } from 'utils/formatDateToYmd';
 
 export function ReservationStatusPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = location.state as { message?: string } | null;
+  const [successMessage, setSuccessMessage] = useState<string | null>(locationState?.message ?? null);
 
   const [date, setDate] = useState(formatDateToYmd(new Date()));
 
   useEffect(() => {
     if (locationState?.message) {
-      toast.success(locationState.message, {
-        position: 'bottom-center',
-        duration: 3000,
-      });
+      setSuccessMessage(locationState.message);
       window.history.replaceState({}, '');
     }
   }, [locationState]);
@@ -43,6 +41,7 @@ export function ReservationStatusPage() {
       </Top.Top03>
 
       <Spacing size={24} />
+      {successMessage && <MessageBanner type="success" text={successMessage} />}
 
       {/* 날짜 선택 */}
       <div
