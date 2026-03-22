@@ -8,6 +8,7 @@ import { cancelReservation } from 'pages/remotes';
 import DatePicker from 'components/DatePicker';
 import MyReservationList from '../../domain/reservation/components/MyReservationList';
 import ReservationTimeline from '../../domain/reservation/components/ReservationTimeline';
+import { toast, Toaster } from 'react-hot-toast';
 
 function formatDate(date: Date): string {
   const y = date.getFullYear();
@@ -25,6 +26,10 @@ export function ReservationStatusPage() {
 
   useEffect(() => {
     if (locationState?.message) {
+      toast.success(locationState.message, {
+        position: 'bottom-center',
+        duration: 3000,
+      });
       window.history.replaceState({}, '');
     }
   }, [locationState]);
@@ -36,6 +41,12 @@ export function ReservationStatusPage() {
         padding-bottom: 40px;
       `}
     >
+      <Toaster
+        containerStyle={{
+          bottom: 32,
+        }}
+      />
+
       <Top.Top03
         css={css`
           padding-left: 24px;

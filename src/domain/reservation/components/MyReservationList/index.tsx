@@ -19,8 +19,6 @@ interface Reservation {
 
 const MyReservationList = () => {
   const queryClient = useQueryClient();
-  const location = useLocation();
-  const locationState = location.state as { message?: string } | null;
 
   const [{ data: myReservationList }, { data: rooms }] = useSuspenseQueries({
     queries: [
@@ -29,9 +27,7 @@ const MyReservationList = () => {
     ],
   });
 
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(
-    locationState?.message ? { type: 'success', text: locationState.message } : null
-  );
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const cancelMutation = useMutation((id: string) => cancelReservation(id), {
     onSuccess: () => {
