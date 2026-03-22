@@ -4,10 +4,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Top, Spacing, Border, Button, Text, Banner } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
-import { cancelReservation } from 'pages/remotes';
 import DatePicker from 'components/DatePicker';
-import MyReservationList from '../../domain/reservation/components/MyReservationList';
-import ReservationTimeline from '../../domain/reservation/components/ReservationTimeline';
+import MyReservationList from 'domain/reservation/components/MyReservationList';
+import ReservationTimeline from 'domain/reservation/components/ReservationTimeline';
 import { toast, Toaster } from 'react-hot-toast';
 
 function formatDate(date: Date): string {

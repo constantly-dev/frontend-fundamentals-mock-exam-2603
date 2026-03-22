@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { useMutation, useQuery, useQueryClient, useSuspenseQueries, useSuspenseQuery } from '@tanstack/react-query';
 import { Button, ListRow, Spacing, Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
-import { EQUIPMENT_LABELS } from '../../../reservation/constants';
+import { EQUIPMENT_LABELS } from 'domain/reservation/constants';
 import { cancelReservation, getMyReservations, getRooms } from 'pages/remotes';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
