@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useQueries } from '@tanstack/react-query';
+import { reservationKeys } from 'domain/reservation/constants/queryKeys';
 import { ReservationFilters, Reservation, Room } from 'domain/reservation/types';
 import { getReservations, getRooms } from 'pages/remotes';
 
@@ -8,11 +9,11 @@ export function useAvailableRooms(filters: ReservationFilters) {
   const [roomsQuery, reservationsQuery] = useQueries({
     queries: [
       {
-        queryKey: ['rooms'],
+        queryKey: reservationKeys.rooms,
         queryFn: getRooms,
       },
       {
-        queryKey: ['reservations', date],
+        queryKey: reservationKeys.list(date),
         queryFn: () => getReservations(date),
         enabled: Boolean(date),
       },

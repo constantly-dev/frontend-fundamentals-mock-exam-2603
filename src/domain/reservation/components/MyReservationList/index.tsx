@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient, useSuspenseQueries, useSuspenseQ
 import { Button, ListRow, Spacing, Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import { EQUIPMENT_LABELS } from 'domain/reservation/constants';
+import { reservationKeys } from 'domain/reservation/constants/queryKeys';
 import { cancelReservation, getMyReservations, getRooms } from 'pages/remotes';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -22,8 +23,8 @@ const MyReservationList = () => {
 
   const [{ data: myReservationList }, { data: rooms }] = useSuspenseQueries({
     queries: [
-      { queryKey: ['myReservations'], queryFn: getMyReservations },
-      { queryKey: ['rooms'], queryFn: getRooms },
+      { queryKey: reservationKeys.myReservations, queryFn: getMyReservations },
+      { queryKey: reservationKeys.rooms, queryFn: getRooms },
     ],
   });
 
@@ -31,8 +32,8 @@ const MyReservationList = () => {
 
   const cancelMutation = useMutation((id: string) => cancelReservation(id), {
     onSuccess: () => {
-      queryClient.invalidateQueries(['reservations']);
-      queryClient.invalidateQueries(['myReservations']);
+      queryClient.invalidateQueries({ queryKey: reservationKeys.all });
+      queryClient.invalidateQueries({ queryKey: reservationKeys.myReservations });
     },
   });
 

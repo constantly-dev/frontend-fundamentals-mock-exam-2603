@@ -7,6 +7,7 @@ import { colors } from '_tosslib/constants/colors';
 import MessageBanner from 'components/MessageBanner';
 import AvailableRoomList from 'domain/reservation/components/AvailableRoomList';
 import BookingFilters from 'domain/reservation/components/BookingFilters';
+import { reservationKeys } from 'domain/reservation/constants/queryKeys';
 import { useAvailableRooms } from 'domain/reservation/hooks/useAvailableRooms';
 import { useReservationFilters } from 'domain/reservation/hooks/useReservationFilters';
 import { useFloorOptions } from 'domain/reservation/hooks/useFloorOptions';
@@ -43,8 +44,8 @@ export function RoomBookingPage() {
       createReservation(data),
     {
       onSuccess: (_data, variables) => {
-        queryClient.invalidateQueries(['reservations', variables.date]);
-        queryClient.invalidateQueries(['myReservations']);
+        queryClient.invalidateQueries(reservationKeys.list(variables.date));
+        queryClient.invalidateQueries(reservationKeys.myReservations);
       },
     }
   );

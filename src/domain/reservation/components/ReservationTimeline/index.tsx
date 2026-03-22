@@ -3,6 +3,7 @@ import { useQuery, useSuspenseQueries } from '@tanstack/react-query';
 import { Spacing, Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import { EQUIPMENT_LABELS, HOUR_LABELS, TIMELINE_START, TOTAL_MINUTES } from 'domain/reservation/constants';
+import { reservationKeys } from 'domain/reservation/constants/queryKeys';
 import { getReservations, getRooms } from 'pages/remotes';
 import { useState } from 'react';
 
@@ -20,8 +21,8 @@ const ReservationTimeline = ({ date }: ReservationTimelineProps) => {
 
   const [{ data: rooms }, { data: reservations }] = useSuspenseQueries({
     queries: [
-      { queryKey: ['rooms'], queryFn: getRooms },
-      { queryKey: ['reservations', date], queryFn: () => getReservations(date) },
+      { queryKey: reservationKeys.rooms, queryFn: getRooms },
+      { queryKey: reservationKeys.list(date), queryFn: () => getReservations(date) },
     ],
   });
 

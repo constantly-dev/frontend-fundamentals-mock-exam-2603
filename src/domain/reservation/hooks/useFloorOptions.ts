@@ -1,11 +1,12 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { reservationKeys } from 'domain/reservation/constants/queryKeys';
 import { Room } from 'domain/reservation/types';
 import { getRooms } from 'pages/remotes';
 
 export function useFloorOptions() {
   const { data: rooms = [] } = useQuery({
-    queryKey: ['rooms'],
+    queryKey: reservationKeys.rooms,
     queryFn: getRooms,
   });
 
