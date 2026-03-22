@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Top, Spacing, Border, Button, Text, Select, ListRow } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
+import MessageBanner from 'components/MessageBanner';
 import { getRooms, getReservations, createReservation } from 'pages/remotes';
 import axios from 'axios';
 import DatePicker from 'components/DatePicker';
@@ -203,29 +204,8 @@ export function RoomBookingPage() {
         예약하기
       </Top.Top03>
 
-      {errorMessage && (
-        <div
-          css={css`
-            padding: 0 24px;
-          `}
-        >
-          <Spacing size={12} />
-          <div
-            css={css`
-              padding: 10px 14px;
-              border-radius: 10px;
-              background: ${colors.red50};
-              display: flex;
-              align-items: center;
-              gap: 8px;
-            `}
-          >
-            <Text typography="t7" fontWeight="medium" color={colors.red500}>
-              {errorMessage}
-            </Text>
-          </div>
-        </div>
-      )}
+      <Spacing size={12} />
+      {errorMessage && <MessageBanner type="error" text={errorMessage} />}
 
       <Spacing size={24} />
 
