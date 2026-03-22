@@ -1,17 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ReservationFilters } from 'domain/reservation/types';
-
-function formatDate(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
-}
+import { formatDateToYmd } from 'utils/formatDateToYmd';
 
 export function useReservationFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [date, setDate] = useState(searchParams.get('date') || formatDate(new Date()));
+  const [date, setDate] = useState(searchParams.get('date') || formatDateToYmd(new Date()));
   const [startTime, setStartTime] = useState(searchParams.get('startTime') || '');
   const [endTime, setEndTime] = useState(searchParams.get('endTime') || '');
   const [attendees, setAttendees] = useState(Number(searchParams.get('attendees')) || 1);

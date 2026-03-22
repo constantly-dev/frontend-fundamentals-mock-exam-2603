@@ -1,12 +1,6 @@
 import { css } from '@emotion/react';
 import { colors } from '_tosslib/constants/colors';
-
-function formatDate(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
-}
+import { formatDateToYmd } from 'utils/formatDateToYmd';
 
 interface DatePickerProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value'> {
   date: string;
@@ -19,7 +13,7 @@ const DatePicker = ({ date, setDate, ...props }: DatePickerProps) => {
       <input
         type="date"
         value={date}
-        min={formatDate(new Date())}
+        min={formatDateToYmd(new Date())}
         onChange={e => setDate(e.target.value)}
         aria-label="날짜"
         {...props}

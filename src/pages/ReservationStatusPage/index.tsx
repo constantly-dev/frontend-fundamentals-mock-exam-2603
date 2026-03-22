@@ -7,20 +7,14 @@ import DatePicker from 'components/DatePicker';
 import MyReservationList from 'domain/reservation/components/MyReservationList';
 import ReservationTimeline from 'domain/reservation/components/ReservationTimeline';
 import { toast, Toaster } from 'react-hot-toast';
-
-function formatDate(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
-}
+import { formatDateToYmd } from 'utils/formatDateToYmd';
 
 export function ReservationStatusPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = location.state as { message?: string } | null;
 
-  const [date, setDate] = useState(formatDate(new Date()));
+  const [date, setDate] = useState(formatDateToYmd(new Date()));
 
   useEffect(() => {
     if (locationState?.message) {

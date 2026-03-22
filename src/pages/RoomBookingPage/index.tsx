@@ -11,13 +11,7 @@ import { useCreateReservationMutation } from 'domain/reservation/hooks/useCreate
 import { useReservationFilters } from 'domain/reservation/hooks/useReservationFilters';
 import { useFloorOptions } from 'domain/reservation/hooks/useFloorOptions';
 import axios from 'axios';
-
-function formatDate(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
-  return `${y}-${m}-${d}`;
-}
+import { formatDateToYmd } from 'utils/formatDateToYmd';
 
 export function RoomBookingPage() {
   const navigate = useNavigate();
@@ -130,7 +124,7 @@ export function RoomBookingPage() {
       <BookingFilters
         filters={filters}
         floors={floors}
-        minDate={formatDate(new Date())}
+        minDate={formatDateToYmd(new Date())}
         validationError={validationError}
         onDateChange={setDate}
         onStartTimeChange={setStartTime}
