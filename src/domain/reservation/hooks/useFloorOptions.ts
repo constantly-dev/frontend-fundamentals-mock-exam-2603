@@ -1,18 +1,11 @@
 import { useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { reservationKeys } from 'domain/reservation/constants/queryKeys';
-import { Room } from 'domain/reservation/types';
-import { getRooms } from 'pages/remotes';
+import { useRoomsQuery } from 'domain/reservation/hooks/useRoomsQuery';
+import { getFloorOptions } from 'domain/reservation/utils/getFloorOptions';
 
 export function useFloorOptions() {
-  const { data: rooms = [] } = useQuery({
-    queryKey: reservationKeys.rooms,
-    queryFn: getRooms,
-  });
+  const { data: rooms = [] } = useRoomsQuery();
 
-  const floors = useMemo(() => [...new Set(rooms.map((room: Room) => room.floor))].sort((a, b) => a - b), [rooms]);
+  const floors = useMemo(() => getFloorOptions(rooms), [rooms]);
 
-  return {
-    floors,
-  };
+  return { floors };
 }
