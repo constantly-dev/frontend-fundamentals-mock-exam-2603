@@ -2,15 +2,17 @@ import { css } from '@emotion/react';
 import { ListRow, Spacing, Text } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import { EQUIPMENT_LABELS } from 'domain/reservation/constants';
-import { Room } from 'domain/reservation/types';
+import { ReservationFilters, Room } from 'domain/reservation/types';
+import { useAvailableRooms } from 'domain/reservation/hooks/useAvailableRooms';
 
 interface AvailableRoomListProps {
-  rooms: Room[];
+  filters: ReservationFilters;
   selectedRoomId: string | null;
   onSelectRoom: (roomId: string) => void;
 }
 
-const AvailableRoomList = ({ rooms, selectedRoomId, onSelectRoom }: AvailableRoomListProps) => {
+const AvailableRoomList = ({ filters, selectedRoomId, onSelectRoom }: AvailableRoomListProps) => {
+  const { availableRooms: rooms } = useAvailableRooms(filters);
   return (
     <div
       css={css`

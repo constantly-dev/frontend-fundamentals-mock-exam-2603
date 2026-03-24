@@ -6,11 +6,7 @@ import { EQUIPMENT_LABELS, HOUR_LABELS, TIMELINE_START, TOTAL_MINUTES } from 'do
 import { reservationKeys } from 'domain/reservation/constants/queryKeys';
 import { getReservations, getRooms } from 'pages/remotes';
 import { useState } from 'react';
-
-function timeToMinutes(time: string): number {
-  const [h, m] = time.split(':').map(Number);
-  return (h - TIMELINE_START) * 60 + m;
-}
+import { timeToMinutes } from 'utils/timeToMinutes';
 
 interface ReservationTimelineProps {
   date: string;

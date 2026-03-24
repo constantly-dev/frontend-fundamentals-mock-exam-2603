@@ -1,12 +1,11 @@
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Top, Spacing, Border, Button } from '_tosslib/components';
 import { colors } from '_tosslib/constants/colors';
 import MessageBanner from 'components/MessageBanner';
 import AvailableRoomList from 'domain/reservation/components/AvailableRoomList';
 import BookingFilters from 'domain/reservation/components/BookingFilters';
-import { useAvailableRooms } from 'domain/reservation/hooks/useAvailableRooms';
 import { useCreateReservationMutation } from 'domain/reservation/hooks/useCreateReservationMutation';
 import { useReservationFilters } from 'domain/reservation/hooks/useReservationFilters';
 import { useFloorOptions } from 'domain/reservation/hooks/useFloorOptions';
@@ -30,7 +29,6 @@ export function RoomBookingPage() {
   } = useReservationFilters();
   const { floors } = useFloorOptions();
   const { mutateAsync: createMutationAsync, isPending: isCreating } = useCreateReservationMutation();
-  const { availableRooms } = useAvailableRooms(filters);
 
   const handleBook = async () => {
     if (!selectedRoomId) {
@@ -141,7 +139,9 @@ export function RoomBookingPage() {
       {/* 예약 가능 회의실 목록 */}
       {isFilterComplete && (
         <>
-          <AvailableRoomList rooms={availableRooms} selectedRoomId={selectedRoomId} onSelectRoom={setSelectedRoomId} />
+          <Suspense fallback={<div>로딩 중...</div>}>
+            <AvailableRoomList filters={filters} selectedRoomId={selectedRoomId} onSelectRoom={setSelectedRoomId} />
+          </Suspense>
           <div
             css={css`
               padding: 0 24px;

@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import { useQueries } from '@tanstack/react-query';
+import { useSuspenseQueries } from '@tanstack/react-query';
 import { reservationKeys } from 'domain/reservation/constants/queryKeys';
 import { ReservationFilters, Reservation, Room } from 'domain/reservation/types';
 import { getReservations, getRooms } from 'pages/remotes';
 
 export function useAvailableRooms(filters: ReservationFilters) {
   const { date, startTime, endTime, attendees, equipment, preferredFloor } = filters;
-  const [roomsQuery, reservationsQuery] = useQueries({
+  const [roomsQuery, reservationsQuery] = useSuspenseQueries({
     queries: [
       {
         queryKey: reservationKeys.rooms,
@@ -15,13 +15,12 @@ export function useAvailableRooms(filters: ReservationFilters) {
       {
         queryKey: reservationKeys.list(date),
         queryFn: () => getReservations(date),
-        enabled: Boolean(date),
       },
     ],
   });
 
-  const rooms = roomsQuery.data ?? [];
-  const reservations = reservationsQuery.data ?? [];
+  const rooms = roomsQuery.data;
+  const reservations = reservationsQuery.data;
 
   const availableRooms = useMemo(
     () =>
