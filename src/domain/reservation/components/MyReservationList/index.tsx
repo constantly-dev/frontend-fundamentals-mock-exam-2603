@@ -9,16 +9,6 @@ import { useCancelReservationMutation } from 'domain/reservation/hooks/useCancel
 import { getMyReservations, getRooms } from 'pages/remotes';
 import { useState } from 'react';
 
-interface Reservation {
-  id: string;
-  roomId: string;
-  date: string;
-  start: string;
-  end: string;
-  attendees: number;
-  equipment: string[];
-}
-
 const MyReservationList = () => {
   const [{ data: myReservationsData }, { data: roomsData }] = useSuspenseQueries({
     queries: [
@@ -89,9 +79,9 @@ const MyReservationList = () => {
               gap: 10px;
             `}
           >
-            {myReservationsData.map((res: Reservation) => (
+            {myReservationsData.map(reservation => (
               <div
-                key={res.id}
+                key={reservation.id}
                 css={css`
                   padding: 14px 16px;
                   border-radius: 14px;
@@ -102,11 +92,11 @@ const MyReservationList = () => {
                 <ListRow
                   contents={
                     <ListRow.Text2Rows
-                      top={findRoomName(res.roomId)}
+                      top={findRoomName(reservation.roomId)}
                       topProps={{ typography: 't6', fontWeight: 'bold', color: colors.grey900 }}
-                      bottom={`${res.date} ${res.start}~${res.end} · ${res.attendees}명 · ${
-                        res.equipment.map((e: string) => EQUIPMENT_LABELS[e]).join(', ') || '장비 없음'
-                      }`}
+                      bottom={`${reservation.date} ${reservation.start}~${reservation.end} · ${
+                        reservation.attendees
+                      }명 · ${reservation.equipment.map((e: string) => EQUIPMENT_LABELS[e]).join(', ') || '장비 없음'}`}
                       bottomProps={{ typography: 't7', color: colors.grey600 }}
                     />
                   }
@@ -118,7 +108,7 @@ const MyReservationList = () => {
                       onClick={e => {
                         e.stopPropagation();
                         if (window.confirm('정말 취소하시겠습니까?')) {
-                          handleCancel(res.id);
+                          handleCancel(reservation.id);
                         }
                       }}
                       disabled={isCanceling}
