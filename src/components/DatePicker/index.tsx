@@ -24,11 +24,11 @@ const DatePicker = ({ date, setDate, ...props }: DatePickerProps) => {
   );
 };
 
-const containerStyle = css`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
+const containerStyle = css({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 16,
+});
 
 const innerStyle = css`
   box-sizing: border-box;

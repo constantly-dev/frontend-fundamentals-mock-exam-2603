@@ -19,7 +19,7 @@ interface Reservation {
 }
 
 const MyReservationList = () => {
-  const [{ data: myReservationList }, { data: rooms }] = useSuspenseQueries({
+  const [{ data: myReservationsData }, { data: roomsData }] = useSuspenseQueries({
     queries: [
       { queryKey: reservationKeys.myReservations, queryFn: getMyReservations },
       { queryKey: reservationKeys.rooms, queryFn: getRooms },
@@ -38,7 +38,7 @@ const MyReservationList = () => {
     }
   };
 
-  const getRoomName = (roomId: string) => rooms.find(r => r.id === roomId)?.name ?? roomId;
+  const getRoomName = (roomId: string) => roomsData.find(r => r.id === roomId)?.name ?? roomId;
 
   return (
     <div>
@@ -86,15 +86,15 @@ const MyReservationList = () => {
           <Text typography="t5" fontWeight="bold" color={colors.grey900}>
             내 예약
           </Text>
-          {myReservationList.length > 0 && (
+          {myReservationsData.length > 0 && (
             <Text typography="t7" fontWeight="medium" color={colors.grey500}>
-              {myReservationList.length}건
+              {myReservationsData.length}건
             </Text>
           )}
         </div>
         <Spacing size={16} />
 
-        {myReservationList.length === 0 ? (
+        {myReservationsData.length === 0 ? (
           <div
             css={css`
               padding: 40px 0;
@@ -115,7 +115,7 @@ const MyReservationList = () => {
               gap: 10px;
             `}
           >
-            {myReservationList.map((res: Reservation) => (
+            {myReservationsData.map((res: Reservation) => (
               <div
                 key={res.id}
                 css={css`
