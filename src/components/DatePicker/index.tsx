@@ -1,8 +1,9 @@
 import { css } from '@emotion/react';
 import { colors } from '_tosslib/constants/colors';
+import type { InputHTMLAttributes } from 'react';
 import { formatDateToYmd } from 'utils/formatDateToYmd';
 
-interface DatePickerProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value'> {
+interface DatePickerProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value'> {
   date: string;
   setDate: (date: string) => void;
 }
