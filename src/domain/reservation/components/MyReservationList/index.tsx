@@ -38,7 +38,7 @@ const MyReservationList = () => {
     }
   };
 
-  const getRoomName = (roomId: string) => roomsData.find(r => r.id === roomId)?.name ?? roomId;
+  const findRoomName = (roomId: string) => roomsData.find(r => r.id === roomId)?.name ?? roomId;
 
   return (
     <div>
@@ -128,7 +128,7 @@ const MyReservationList = () => {
                 <ListRow
                   contents={
                     <ListRow.Text2Rows
-                      top={getRoomName(res.roomId)}
+                      top={findRoomName(res.roomId)}
                       topProps={{ typography: 't6', fontWeight: 'bold', color: colors.grey900 }}
                       bottom={`${res.date} ${res.start}~${res.end} · ${res.attendees}명 · ${
                         res.equipment.map((e: string) => EQUIPMENT_LABELS[e]).join(', ') || '장비 없음'
