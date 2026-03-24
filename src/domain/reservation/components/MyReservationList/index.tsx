@@ -27,11 +27,11 @@ const MyReservationList = () => {
   });
 
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const cancelMutation = useCancelReservationMutation();
+  const { mutateAsync: cancelMutationAsync, isPending: isCanceling } = useCancelReservationMutation();
 
   const handleCancel = async (id: string) => {
     try {
-      await cancelMutation.mutateAsync(id);
+      await cancelMutationAsync(id);
       setMessage({ type: 'success', text: '예약이 취소되었습니다.' });
     } catch {
       setMessage({ type: 'error', text: '취소에 실패했습니다.' });
@@ -147,6 +147,7 @@ const MyReservationList = () => {
                           handleCancel(res.id);
                         }
                       }}
+                      disabled={isCanceling}
                     >
                       취소
                     </Button>
